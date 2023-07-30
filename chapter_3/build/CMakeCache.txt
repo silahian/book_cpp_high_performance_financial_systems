@@ -214,6 +214,9 @@ LimitOrderBook_BINARY_DIR:STATIC=/home/silahian/projects/book_cpp_high_performan
 //Value Computed by CMake
 LimitOrderBook_SOURCE_DIR:STATIC=/home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_3
 
+//The directory containing a CMake configuration file for benchmark.
+benchmark_DIR:PATH=/lib/x86_64-linux-gnu/cmake/benchmark
+
 
 ########################
 # INTERNAL cache entries

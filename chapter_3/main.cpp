@@ -1,8 +1,552 @@
+#define RUN_BENCHMARK 1
+#define RUN_UNIT_TEST 0
+
+
+
+#if RUN_UNIT_TEST == 1
 #include <iostream>
-#include "exploring_linked_list.hpp"
+#include "tests/exploring_circular_array_test.hpp"
+#include "exploring_binary_tree.hpp"
 
 int main() {
-    LinkedList tree;
 
+    binary_tree::LimitOrderBook o(0,0);
+    o.do_test();
+
+    //run_all_tests();
+
+    std::cout << "Done..." << std::endl;
     return 0;
 }
+#endif
+
+#if RUN_BENCHMARK == 1
+#define _GNU_SOURCE
+#include <sched.h>
+#include <unistd.h>
+
+#include <iostream>
+#include <iomanip>
+#include <random>
+#include <benchmark/benchmark.h>
+#include "exploring_circular_array.hpp"
+#include "exploring_hash_table.hpp"
+#include "exploring_linked_list.hpp"
+#include "exploring_queue.hpp"
+#include "exploring_binary_tree.hpp"
+const int _LOB_DEPTH = 50;
+
+static void AddOrder_CircularArray(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+
+    circular_array::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    for (auto _ : state) {
+        // Create a new order with incrementing id and price
+        circular_array::Order order(id, price, 100);
+        // Benchmark the add_order method
+        lob.add_order(order, true);
+
+        // Increment the id and price for the next order
+        id++;
+        price += 0.01;
+    }
+
+}
+static void AddOrder_HashtTable(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+    hash_table::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    for (auto _ : state) {
+        // Create a new order with incrementing id and price
+        hash_table::Order order(id, price, 100);
+        // Benchmark the add_order method
+        lob.add_order(order, true);
+
+        // Increment the id and price for the next order
+        id++;
+        price += 0.01;
+    }
+}
+static void AddOrder_LinkedList(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+    linked_list::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    for (auto _ : state) {
+        // Create a new order with incrementing id and price
+        linked_list::Order order(id, price, 100);
+        // Benchmark the add_order method
+        lob.add_order(order, true);
+
+        // Increment the id and price for the next order
+        id++;
+        price += 0.01;
+    }
+
+}
+static void AddOrder_Queue(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+    queue::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    for (auto _ : state) {
+        // Create a new order with incrementing id and price
+        queue::Order order(id, price, 100);
+        // Benchmark the add_order method
+        lob.add_order(order, true);
+
+        // Increment the id and price for the next order
+        id++;
+        price += 0.01;
+    }
+
+}
+static void AddOrder_BinaryTree(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+    binary_tree::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    for (auto _ : state) {
+        // Create a new order with incrementing id and price
+        binary_tree::Order order(id, price, 100);
+        // Benchmark the add_order method
+        lob.add_order(order, true);
+
+        // Increment the id and price for the next order
+        id++;
+        price += 0.01;
+    }
+
+}
+
+
+static void DeleteOrder_CircularArray(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+
+    circular_array::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < _LOB_DEPTH; ++i) {
+        circular_array::Order order(id, price, 100);
+        lob.add_order(order, true);
+        id++;
+        price += 0.01;
+    }
+
+    // Random number generator
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(1, _LOB_DEPTH);
+
+    for (auto _ : state) {
+        // Generate a random id
+        int random_id = distribution(generator);
+        // Create a new order with the random id
+        circular_array::Order order(random_id, 10.01 + (random_id - 1) * 0.01, 100);
+        // Benchmark the delete_order method
+        lob.delete_order(order, true);
+
+        // Generate a new random id for the new order
+        int new_id = distribution(generator);
+        // Create a new order with the new random id
+        circular_array::Order new_order(new_id, 10.01 + (new_id - 1) * 0.01, 100);
+        // Add the new order to the LOB
+        lob.add_order(new_order, true);
+    }
+}
+static void DeleteOrder_HashTable(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+
+    hash_table::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < _LOB_DEPTH; ++i) {
+        hash_table::Order order(id, price, 100);
+        lob.add_order(order, true);
+        id++;
+        price += 0.01;
+    }
+
+    // Random number generator
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(1, _LOB_DEPTH);
+
+    for (auto _ : state) {
+        // Generate a random id
+        int random_id = distribution(generator);
+        // Create a new order with the random id
+        hash_table::Order order(random_id, 10.01 + (random_id - 1) * 0.01, 100);
+        // Benchmark the delete_order method
+        lob.delete_order(order, true);
+
+        // Generate a new random id for the new order
+        int new_id = distribution(generator);
+        // Create a new order with the new random id
+        hash_table::Order new_order(new_id, 10.01 + (new_id - 1) * 0.01, 100);
+        // Add the new order to the LOB
+        lob.add_order(new_order, true);
+    }
+}
+static void DeleteOrder_LinkedList(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+
+    linked_list::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < _LOB_DEPTH; ++i) {
+        linked_list::Order order(id, price, 100);
+        lob.add_order(order, true);
+        id++;
+        price += 0.01;
+    }
+
+    // Random number generator
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(1, _LOB_DEPTH);
+
+    for (auto _ : state) {
+        // Generate a random id
+        int random_id = distribution(generator);
+        // Create a new order with the random id
+        linked_list::Order order(random_id, 10.01 + (random_id - 1) * 0.01, 100);
+        // Benchmark the delete_order method
+        lob.delete_order(order, true);
+
+        // Generate a new random id for the new order
+        int new_id = distribution(generator);
+        // Create a new order with the new random id
+        linked_list::Order new_order(new_id, 10.01 + (new_id - 1) * 0.01, 100);
+        // Add the new order to the LOB
+        lob.add_order(new_order, true);
+    }
+}
+static void DeleteOrder_Queue(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+
+    queue::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < _LOB_DEPTH; ++i) {
+        queue::Order order(id, price, 100);
+        lob.add_order(order, true);
+        id++;
+        price += 0.01;
+    }
+
+    // Random number generator
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(1, _LOB_DEPTH);
+
+    for (auto _ : state) {
+        // Generate a random id
+        int random_id = distribution(generator);
+        // Create a new order with the random id
+        queue::Order order(random_id, 10.01 + (random_id - 1) * 0.01, 100);
+        // Benchmark the delete_order method
+        lob.delete_order(order, true);
+
+        // Generate a new random id for the new order
+        int new_id = distribution(generator);
+        // Create a new order with the new random id
+        queue::Order new_order(new_id, 10.01 + (new_id - 1) * 0.01, 100);
+        // Add the new order to the LOB
+        lob.add_order(new_order, true);
+    }
+}
+static void DeleteOrder_BinaryTree(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+
+    binary_tree::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < _LOB_DEPTH; ++i) {
+        binary_tree::Order order(id, price, 100);
+        lob.add_order(order, true);
+        id++;
+        price += 0.01;
+    }
+
+    // Random number generator
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(1, _LOB_DEPTH);
+
+    for (auto _ : state) {
+        // Generate a random id
+        int random_id = distribution(generator);
+        // Create a new order with the random id
+        binary_tree::Order order(random_id, 10.01 + (random_id - 1) * 0.01, 100);
+        // Benchmark the delete_order method
+        lob.delete_order(order, true);
+
+        // Generate a new random id for the new order
+        int new_id = distribution(generator);
+        // Create a new order with the new random id
+        binary_tree::Order new_order(new_id, 10.01 + (new_id - 1) * 0.01, 100);
+        // Add the new order to the LOB
+        lob.add_order(new_order, true);
+    }
+}
+
+
+static void GetBestPrice_CircularArray(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+
+    circular_array::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < _LOB_DEPTH; ++i) {
+        circular_array::Order order(id, price, 100);
+        lob.add_order(order, true);
+        id++;
+        price += 0.01;
+    }
+
+
+    for (auto _ : state) {
+        lob.get_best_bid();
+    }
+}
+static void GetBestPrice_HashTable(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+
+    hash_table::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < _LOB_DEPTH; ++i) {
+        hash_table::Order order(id, price, 100);
+        lob.add_order(order, true);
+        id++;
+        price += 0.01;
+    }
+
+
+    for (auto _ : state) {
+        lob.get_best_bid();
+    }
+}
+static void GetBestPrice_LinkedList(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+
+    linked_list::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < _LOB_DEPTH; ++i) {
+        linked_list::Order order(id, price, 100);
+        lob.add_order(order, true);
+        id++;
+        price += 0.01;
+    }
+
+
+    for (auto _ : state) {
+        lob.get_best_bid();
+    }
+}
+static void GetBestPrice_Queue(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+
+    queue::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < _LOB_DEPTH; ++i) {
+        queue::Order order(id, price, 100);
+        lob.add_order(order, true);
+        id++;
+        price += 0.01;
+    }
+
+
+    for (auto _ : state) {
+        lob.get_best_bid();
+    }
+}
+static void GetBestPrice_BinaryTree(benchmark::State& state) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
+
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1) {
+        perror("sched_setaffinity");
+        exit(1);
+    }
+
+    binary_tree::LimitOrderBook lob(2, _LOB_DEPTH);
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < _LOB_DEPTH; ++i) {
+        binary_tree::Order order(id, price, 100);
+        lob.add_order(order, true);
+        id++;
+        price += 0.01;
+    }
+
+
+    for (auto _ : state) {
+        lob.get_best_bid();
+    }
+}
+
+
+
+BENCHMARK(AddOrder_BinaryTree);
+BENCHMARK(AddOrder_HashtTable);
+BENCHMARK(AddOrder_Queue);
+BENCHMARK(AddOrder_LinkedList);
+BENCHMARK(AddOrder_CircularArray);
+
+BENCHMARK(DeleteOrder_BinaryTree);
+BENCHMARK(DeleteOrder_HashTable);
+BENCHMARK(DeleteOrder_Queue);
+BENCHMARK(DeleteOrder_LinkedList);
+BENCHMARK(DeleteOrder_CircularArray);
+
+
+BENCHMARK(GetBestPrice_BinaryTree);
+BENCHMARK(GetBestPrice_HashTable);
+BENCHMARK(GetBestPrice_Queue);
+BENCHMARK(GetBestPrice_LinkedList);
+BENCHMARK(GetBestPrice_CircularArray);
+
+
+BENCHMARK_MAIN();
+#endif

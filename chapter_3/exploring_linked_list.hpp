@@ -1,69 +1,125 @@
 #pragma once
 #include <iostream>
 
-class Node {
+namespace linked_list {
+class Order {
 public:
-    int price;
-    Node* next;
+    int id;
+    double price;
+    Order* next;
 
-    Node(int p) {
+    Order(int id, double price, int quantity) : price(price), id(id)
+    {
+        next = NULL;
+    }
+    Order (const Order& o)
+    {
+        id = o.id;
+        price = o.price;
+        next = NULL;
+    }
+    Order(double p) {
         price = p;
         next = NULL;
     }
 };
 
 
-class LinkedList {
+class LimitOrderBook {
 public:
-    Node* head;
-    LinkedList() : head(nullptr) {}
+    Order* head;
+    Order* tail;
+    int depth;
+    int size;
+
+    LimitOrderBook(int presicion, int depth) : head(nullptr), tail(nullptr), depth(depth), size(0) {}
+    LimitOrderBook(int depth) : head(nullptr), tail(nullptr), depth(depth), size(0) {}
   
-    void addOrder(Node*& head, int price) {
-        Node* newNode = new Node(price);
-        if (head == NULL || head->price >= price) {
+    void add_order(const Order& order, bool is_bid) {
+        Order* newNode = new Order(order);
+        if (size == depth) {
+            if (order.price <= head->price) {
+                // discard
+                delete newNode;
+                return;
+            } else {
+                // remove the head (lowest value)
+                Order* temp = head;
+                head = head->next;
+                delete temp;
+                size--;
+            }
+        }
+
+        if (head == NULL || head->price >= order.price) {
             newNode->next = head;
             head = newNode;
+            if (tail == NULL) {
+                tail = head;
+            }
         } else {
-            Node* current = head;
-            while (current->next != NULL && current->next->price < price) {
+            Order* current = head;
+            while (current->next != NULL && current->next->price < order.price) {
                 current = current->next;
             }
             newNode->next = current->next;
             current->next = newNode;
+            if (newNode->next == NULL) {
+                tail = newNode;
+            }
         }
+        size++;
     }
   
-    void deleteOrder(Node*& head, int price) {
+    void delete_order(const Order& order, bool is_bid) {
         if (head == NULL) return;
-        if (head->price == price) {
-            Node* temp = head;
+        if (head->price == order.price) {
+            Order* temp = head;
             head = head->next;
             delete temp;
+            size--;
             return;
         }
-        Node* current = head;
-        while (current->next != NULL && current->next->price != price) {
+        Order* current = head;
+        while (current->next != NULL && current->next->price != order.price) {
             current = current->next;
         }
         if (current->next != NULL) {
-            Node* temp = current->next;
+            Order* temp = current->next;
             current->next = current->next->next;
             delete temp;
+            size--;
         }
     }
 
-    int getTopOfBook(Node* head) {
+    Order get_lowest_bid(){
         if (head == NULL) {
             throw "Order book is empty";
         }
-        return head->price;
+        return *head;
+    }
+    Order get_best_bid() {
+        if (head == NULL) {
+            throw "Order book is empty";
+        }
+        return *tail;
+    }    
+    void print_bids() {
+        Order* order = head;
+        while (order != nullptr) {
+            std::cout << order->price << " ";
+            order = order->next;
+        }
+        std::cout << std::endl;
     }
 
-    void printList() {
-        Node* node = head;
-        while (node != nullptr) {
-            std::cout << node->price << " ";
-            node = node->next;
-        }
-    }
+
+
+    Order get_highest_offer(){};
+    Order get_best_offer(){};    
+    void print_offers(){}
+
+
 };
+
+}

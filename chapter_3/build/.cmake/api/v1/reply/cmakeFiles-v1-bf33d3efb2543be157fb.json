@@ -130,6 +130,22 @@
 			"isCMake" : true,
 			"isExternal" : true,
 			"path" : "/usr/share/cmake-3.16/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/lib/x86_64-linux-gnu/cmake/benchmark/benchmarkConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/lib/x86_64-linux-gnu/cmake/benchmark/benchmarkConfig.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/lib/x86_64-linux-gnu/cmake/benchmark/benchmarkTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/lib/x86_64-linux-gnu/cmake/benchmark/benchmarkTargets-release.cmake"
 		}
 	],
 	"kind" : "cmakeFiles",

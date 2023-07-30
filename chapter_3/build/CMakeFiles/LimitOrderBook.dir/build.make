@@ -79,6 +79,8 @@ LimitOrderBook_EXTERNAL_OBJECTS =
 
 LimitOrderBook: CMakeFiles/LimitOrderBook.dir/main.cpp.o
 LimitOrderBook: CMakeFiles/LimitOrderBook.dir/build.make
+LimitOrderBook: /usr/lib/x86_64-linux-gnu/libbenchmark.so.1.5.0
+LimitOrderBook: /usr/lib/x86_64-linux-gnu/librt.so
 LimitOrderBook: CMakeFiles/LimitOrderBook.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable LimitOrderBook"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/LimitOrderBook.dir/link.txt --verbose=$(VERBOSE)
