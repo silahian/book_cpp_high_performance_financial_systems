@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_3/build",
+  "command": "/bin/g++    -g   -std=gnu++14 -o CMakeFiles/LimitOrderBook.dir/main.cpp.o -c /home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_3/main.cpp",
+  "file": "/home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_3/main.cpp"
+}
+]

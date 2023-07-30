@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 
 class Node {
@@ -61,7 +62,7 @@ public:
     void printList() {
         Node* node = head;
         while (node != nullptr) {
-            std::cout << node->data << " ";
+            std::cout << node->price << " ";
             node = node->next;
         }
     }
