@@ -50,6 +50,8 @@
         "iomanip": "cpp",
         "chrono": "cpp",
         "map": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "thread": "cpp",
+        "shared_mutex": "cpp"
     }
 }

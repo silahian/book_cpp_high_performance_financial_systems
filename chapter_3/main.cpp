@@ -24,7 +24,7 @@ int main() {
 #define _GNU_SOURCE
 #include <sched.h>
 #include <unistd.h>
-
+#include <thread>
 #include <iostream>
 #include <iomanip>
 #include <random>
@@ -34,6 +34,7 @@ int main() {
 #include "exploring_linked_list.hpp"
 #include "exploring_queue.hpp"
 #include "exploring_binary_tree.hpp"
+#include "synchronized_limitorderbook.hpp"
 const int _LOB_DEPTH = 50;
 
 static void AddOrder_CircularArray(benchmark::State& state) {
@@ -527,7 +528,7 @@ static void GetBestPrice_BinaryTree(benchmark::State& state) {
 }
 
 
-
+/*
 BENCHMARK(AddOrder_BinaryTree);
 BENCHMARK(AddOrder_HashtTable);
 BENCHMARK(AddOrder_Queue);
@@ -546,6 +547,70 @@ BENCHMARK(GetBestPrice_HashTable);
 BENCHMARK(GetBestPrice_Queue);
 BENCHMARK(GetBestPrice_LinkedList);
 BENCHMARK(GetBestPrice_CircularArray);
+*/
+
+//BENCHMARK MULTI-THREADING for Circular Array
+static std::vector<synchronized::Order> generate_random_orders(int num_orders) {
+    std::vector<synchronized::Order> orders;
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < _LOB_DEPTH; ++i) {
+        synchronized::Order order(id, price, 100);
+        orders.push_back(order);
+        id++;
+        price += 0.01;
+    }
+    return orders;
+
+}
+static void BM_MultiThreadedAddOrderAndGetBestBid(benchmark::State& state) {
+    // Create a new order book
+    synchronized::SynchronizedLimitOrderBook order_book(2, 100);
+
+    // Prepare some orders
+    std::vector<synchronized::Order> orders = generate_random_orders(state.range(0));
+
+    // Run the benchmark
+    for (auto _ : state) {
+        // Create threads for add_order
+        std::vector<std::thread> add_order_threads;
+        for (int i = 0; i < 2; ++i) {
+            add_order_threads.emplace_back([&]() {
+                for (const auto& order : orders) {
+                    order_book.add_order(order, true);
+                }
+            });
+        }
+
+        // Create threads for get_best_bid
+        std::vector<std::thread> get_best_bid_threads;
+        for (int i = 0; i < state.range(1); ++i) {
+            get_best_bid_threads.emplace_back([&]() {
+                for (int j = 0; j < state.range(0); ++j) {
+                    order_book.get_best_bid();
+                }
+            });
+        }
+
+        // Join all threads
+        for (auto& thread : add_order_threads) {
+            thread.join();
+        }
+        for (auto& thread : get_best_bid_threads) {
+            thread.join();
+        }
+    }
+}
+
+
+// Register the benchmark
+BENCHMARK(BM_MultiThreadedAddOrderAndGetBestBid)
+    ->Args({1000, 10})  // 1000 orders, 10 reader threads
+    ->Args({1000, 20})  // 1000 orders, 20 reader threads
+    ->Args({1000, 30}); // 1000 orders, 30 reader threads
 
 
 BENCHMARK_MAIN();

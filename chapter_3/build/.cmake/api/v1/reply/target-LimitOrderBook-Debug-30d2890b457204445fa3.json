@@ -45,7 +45,7 @@
 					"fragment" : "-g  "
 				},
 				{
-					"fragment" : "-std=gnu++14"
+					"fragment" : "-std=gnu++17"
 				}
 			],
 			"language" : "CXX",

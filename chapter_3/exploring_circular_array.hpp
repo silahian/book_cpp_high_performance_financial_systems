@@ -28,13 +28,15 @@ class LimitOrderBook {
 private:
     std::vector<Order> bids;
     std::vector<Order> offers;
+    int precision;
+    int depth;
+    double step_value;
+    
+protected:
     Order* ptr_bid_ini;
     Order* ptr_bid_end;
     Order* ptr_offer_ini;
     Order* ptr_offer_end;
-    int precision;
-    int depth;
-    double step_value;
 
 int price_to_index(double price, bool is_bid, bool update_pointers=true)
 {
@@ -238,7 +240,7 @@ public:
         step_value = std::pow(10, precision);
     }
 
-    void add_order(const Order& order, bool is_bid) {
+    virtual void add_order(const Order& order, bool is_bid) {
         
 
         if (is_bid) {
@@ -276,7 +278,7 @@ public:
         }
     }
 
-    Order get_best_bid() {
+    virtual Order get_best_bid() {
         return *ptr_bid_end;
     }
     Order get_lowest_bid() {

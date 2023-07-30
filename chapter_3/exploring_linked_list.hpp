@@ -115,8 +115,8 @@ public:
 
 
 
-    Order get_highest_offer(){};
-    Order get_best_offer(){};    
+    Order get_highest_offer(){ return Order(0, 0, 0);}
+    Order get_best_offer(){ return Order(0, 0, 0);} 
     void print_offers(){}
 
 
