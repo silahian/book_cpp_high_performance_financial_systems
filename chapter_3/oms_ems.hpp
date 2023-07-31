@@ -4,6 +4,7 @@
 #include <queue>
 #include <thread>
 #include <mutex>
+#include <zmq.hpp>
 
 using namespace std;
 class FIXEngine
@@ -48,12 +49,44 @@ private:
     unordered_map<int, Order> activeOrders;
     unordered_map<int, Order> filledOrders;
     UpdatesQueue<Order> orderUpdates;
+    zmq::context_t context;
+    zmq::socket_t subscriber;
+    std::thread marketDataThread;
+    
     bool order_validation_ok(const Order&o){
         //do validations
         
         return true;
     }
 public:
+    OMS() : context(1), subscriber(context, ZMQ_SUB) {
+        subscriber.connect("tcp://localhost:5556");
+        subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
+        
+    }
+    OMS() : context(1), subscriber(context, ZMQ_SUB) {
+        subscriber.connect("tcp://localhost:5556");
+        subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
+        
+        //launch new thread to read incoming market data messages from the Messaging Hub
+        marketDataThread = std::thread(&OMS::ReceiveMarketData, this);
+    }
+
+    ~OMS() {
+        if (marketDataThread.joinable()) {
+            marketDataThread.join();
+        }
+    }    
+    void ReceiveMarketData() {
+        while (true) {
+            zmq::message_t update;
+            subscriber.recv(&update);
+            std::string update_str(static_cast<char*>(update.data()), update.size());
+            // Process the update
+            // ...
+        }
+    }
+
     void run(){
         // Pin this thread to the first CPU core
         cpu_set_t cpuset;
