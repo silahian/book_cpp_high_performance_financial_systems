@@ -53,5 +53,12 @@
         "ratio": "cpp",
         "thread": "cpp",
         "shared_mutex": "cpp"
-    }
+    },
+    "cmake.configureSettings": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
+    },
+    "cmake.configureOnOpen": true,
+    "cmake.buildDirectory": "${workspaceFolder}/build"
 }
+
+

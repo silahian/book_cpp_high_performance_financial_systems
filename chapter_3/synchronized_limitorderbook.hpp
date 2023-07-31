@@ -1,5 +1,4 @@
 #include <shared_mutex>
-#include <atomic>
 #include "exploring_circular_array.hpp"
 
 namespace synchronized

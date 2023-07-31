@@ -240,9 +240,7 @@ public:
         step_value = std::pow(10, precision);
     }
 
-    virtual void add_order(const Order& order, bool is_bid) {
-        
-
+    virtual void add_order(const Order& order, bool is_bid) {        
         if (is_bid) {
             int index = price_to_index(order.price, true);
             if (index > -1)
@@ -252,7 +250,6 @@ public:
             if (index > -1)
                 offers[index] = order;
         }
-
     }
 
 
