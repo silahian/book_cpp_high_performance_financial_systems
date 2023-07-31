@@ -1,3 +1,4 @@
+#pragma once
 #include "exploring_circular_array.hpp"
 #include <tbb/concurrent_vector.h>
 namespace lockfree

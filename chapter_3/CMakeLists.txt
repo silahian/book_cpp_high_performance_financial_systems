@@ -11,8 +11,11 @@ find_package(benchmark REQUIRED)
 # Manually specify the TBB include directories and libraries
 include_directories(/usr/include/tbb)
 link_directories(/usr/lib/x86_64-linux-gnu)
+# adding QUICKFIX
+include_directories(/usr/local/include/quickfix)
+link_directories(/usr/local/lib)
 
 add_executable(LimitOrderBook main.cpp exploring_hash_table.hpp)
 
 # Link Google Benchmark to your target
-target_link_libraries(LimitOrderBook benchmark::benchmark tbb)
+target_link_libraries(LimitOrderBook benchmark::benchmark tbb quickfix)

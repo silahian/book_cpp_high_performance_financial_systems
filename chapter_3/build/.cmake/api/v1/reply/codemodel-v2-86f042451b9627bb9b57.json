@@ -18,7 +18,7 @@
 					]
 				}
 			],
-			"name" : "Debug",
+			"name" : "",
 			"projects" : 
 			[
 				{
@@ -38,7 +38,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "LimitOrderBook::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-LimitOrderBook-Debug-33a916fb7fa86c1d0365.json",
+					"jsonFile" : "target-LimitOrderBook-180b80a79fc8300d3900.json",
 					"name" : "LimitOrderBook",
 					"projectIndex" : 0
 				}

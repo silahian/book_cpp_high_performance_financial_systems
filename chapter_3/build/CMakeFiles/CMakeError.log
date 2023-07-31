@@ -1,0 +1,108 @@
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" did not produce an executable in "/home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_3/build/CMakeFiles/3.16.3/CompilerIdCXX".
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /bin/clang++ 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+clang: error: no such file or directory: 'CMakeCXXCompilerId.cpp'
+clang: error: no input files
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /bin/g++ 
+Build flags: 
+Id flags: -c 
+
+The output was:
+1
+Assembler messages:
+Fatal error: can't create CMakeCXXCompilerId.o: No such file or directory
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /bin/g++ 
+Build flags: 
+Id flags: --c++ 
+
+The output was:
+1
+g++: error: unrecognized command line option ‘--c++’
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /bin/clang++ 
+Build flags: 
+Id flags: -c 
+
+The output was:
+1
+clang: error: no such file or directory: 'CMakeCXXCompilerId.cpp'
+clang: error: no input files
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /bin/g++ 
+Build flags: 
+Id flags: --ec++ 
+
+The output was:
+1
+g++: error: unrecognized command line option ‘--ec++’; did you mean ‘-Weffc++’?
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /bin/clang++ 
+Build flags: 
+Id flags: --c++ 
+
+The output was:
+1
+clang: error: unsupported option '--c++'
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /bin/g++ 
+Build flags: 
+Id flags: --target=arm-arm-none-eabi;-mcpu=cortex-m3 
+
+The output was:
+1
+g++: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+g++: error: unrecognized command line option ‘--target=arm-arm-none-eabi’
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /bin/clang++ 
+Build flags: 
+Id flags: --ec++ 
+
+The output was:
+1
+clang: error: unsupported option '--ec++'
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /bin/g++ 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+/bin/ld: cannot open output file a.out: No such file or directory
+collect2: error: ld returned 1 exit status
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: /bin/clang++ 
+Build flags: 
+Id flags: --target=arm-arm-none-eabi;-mcpu=cortex-m3 
+
+The output was:
+1
+clang: error: unable to execute command: Executable "ld.lld" doesn't exist!
+clang: error: ld.lld command failed with exit code 1 (use -v to see invocation)
+
+
