@@ -3,8 +3,10 @@
 #include <iostream>
 //#include "../exploring_circular_array.hpp"
 //#include "../exploring_hash_table.hpp"
-#include "../exploring_linked_list.hpp"
-using namespace linked_list;
+//#include "../exploring_linked_list.hpp"
+#include "../lockfree_limitorderbook.hpp"
+
+using namespace lockfree;
 
     void test_lower_order_arrives(bool is_bid)
     {
@@ -176,14 +178,14 @@ using namespace linked_list;
         test_order_arrives_with_gapup_cycle(is_bid);
         test_order_arrives_with_gapdown_cycle(is_bid);
 
-        /*is_bid = false;
+        is_bid = false;
         test_lower_order_arrives(is_bid);
         test_lower_order_arrives2(is_bid);
         test_higher_order_arrives(is_bid);
         test_order_arrives_with_gapup(is_bid);
         test_order_arrives_with_gapdown(is_bid);
         test_order_arrives_with_gapup_cycle(is_bid);
-        test_order_arrives_with_gapdown_cycle(is_bid);*/
+        test_order_arrives_with_gapdown_cycle(is_bid);
 
     }
 

@@ -19,3 +19,5 @@ add_executable(LimitOrderBook main.cpp exploring_hash_table.hpp)
 
 # Link Google Benchmark to your target
 target_link_libraries(LimitOrderBook benchmark::benchmark tbb quickfix)
+
+set(CMAKE_BUILD_TYPE Debug)

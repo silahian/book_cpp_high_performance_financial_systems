@@ -7,7 +7,7 @@
 
 # =============================================================================
 # Project: LimitOrderBook
-# Configuration: 
+# Configuration: Debug
 # =============================================================================
 # =============================================================================
 
@@ -25,7 +25,7 @@ rule CUSTOM_COMMAND
 rule CXX_COMPILER__LimitOrderBook
   depfile = $DEP_FILE
   deps = gcc
-  command = /bin/g++  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = /bin/clang++  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building CXX object $out
 
 
@@ -33,7 +33,7 @@ rule CXX_COMPILER__LimitOrderBook
 # Rule for linking CXX executable.
 
 rule CXX_EXECUTABLE_LINKER__LimitOrderBook
-  command = $PRE_LINK && /bin/g++  $FLAGS  $LINK_FLAGS $in  -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
+  command = $PRE_LINK && /bin/clang++  $FLAGS  $LINK_FLAGS $in  -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
   description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT
 

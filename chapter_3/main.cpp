@@ -1,19 +1,15 @@
-#define RUN_BENCHMARK 1
-#define RUN_UNIT_TEST 0
+#define RUN_BENCHMARK 0
+#define RUN_UNIT_TEST 1
 
 
 
 #if RUN_UNIT_TEST == 1
 #include <iostream>
 #include "tests/exploring_circular_array_test.hpp"
-#include "exploring_binary_tree.hpp"
 
 int main() {
 
-    binary_tree::LimitOrderBook o(0,0);
-    o.do_test();
-
-    //run_all_tests();
+    run_all_tests();
 
     std::cout << "Done..." << std::endl;
     return 0;
