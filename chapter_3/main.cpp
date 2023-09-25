@@ -1,5 +1,5 @@
 #define RUN_BENCHMARK 0
-#define RUN_UNIT_TEST 1
+#define RUN_UNIT_TEST 0
 
 
 
@@ -12,6 +12,60 @@ int main() {
     run_all_tests();
 
     std::cout << "Done..." << std::endl;
+    return 0;
+}
+#elif RUN_UNIT_TEST == 0 && RUN_BENCHMARK == 0
+
+#include "lockfree_limitorderbook.hpp"
+#include <vector>
+#include <thread>
+
+std::vector<lockfree::Order> generate_random_orders_forlockfree(int num_orders) {
+    std::vector<lockfree::Order> orders;
+    // Variables to increment for each order
+    int id = 1;
+    double price = 10.01;
+
+    // Initialize the LOB with orders
+    for (int i = 0; i < 100; ++i) {
+        lockfree::Order order(id, price, 100);
+        orders.push_back(order);
+        id++;
+        price += 0.01;
+    }
+    return orders;
+
+}
+
+int main(){
+    // Create a new order book
+    lockfree::LockFreeLimitOrderBook order_book(2, 100);
+
+    // Prepare some orders
+    std::vector<lockfree::Order> orders = generate_random_orders_forlockfree(80);
+
+    // Create threads for add_order
+    std::vector<std::thread> add_order_threads;
+    for (int i = 0; i < 1; ++i) {
+        add_order_threads.emplace_back([&]() {
+            for (const auto& order : orders) {
+                order_book.add_order(order, true);
+            }
+        });
+    }
+    // Create threads for get_best_bid
+    std::vector<std::thread> get_best_bid_threads;
+    for (int i = 0; i < 2; ++i) {
+        get_best_bid_threads.emplace_back([&]() {
+            for (int j = 0; j < 1; ++j) {
+                order_book.get_best_bid();
+            }
+        });
+    }
+
+    std::cout << "Running for 10 sec...." << std::endl;
+    sleep(10); //run for 10 seconds
+
     return 0;
 }
 #endif
@@ -723,6 +777,7 @@ BENCHMARK(BM_MultiThreadedAddOrderAndGetBestBid)
 BENCHMARK(BM_SmartBlockingAddOrderAndGetBestBid)
     ->Args({1000, 10})  // 1000 orders, 10 reader threads
     ->Args({1000, 20});  // 1000 orders, 20 reader threads
+
 BENCHMARK(BM_LockFreeAddOrderAndGetBestBid)
     ->Args({1000, 10})  // 1000 orders, 10 reader threads
     ->Args({1000, 20});  // 1000 orders, 20 reader threads
