@@ -57,7 +57,7 @@ public:
         return current_asset_count;
     }
     void setCurrentAssetCount(int asset_count) {
-        current_asset_count = asset_count;
+        current_asset_count = asset_count; 
     }
 
     // Methods for asset positions
@@ -89,6 +89,7 @@ public:
         pendingOrders.erase(assetName);
     }
 };
+
 class MarketData {
 private:
     // Price Information
@@ -106,66 +107,27 @@ private:
 
 public:
     // Constructor
-    MarketData() : bidPrice(0.0), askPrice(0.0), lastTradedPrice(0.0), vwap(0.0), bidVolume(0.0), askVolume(0.0), tradeVolume(0.0) {}
+    MarketData() : bidPrice(0.0), askPrice(0.0), 
+                lastTradedPrice(0.0), vwap(0.0), bidVolume(0.0), 
+                askVolume(0.0), tradeVolume(0.0) {}
 
     // Setters and Getters for Price Information
-    void setBidPrice(double bid) {
-        bidPrice = bid;
-    }
-
-    double getBidPrice() const {
-        return bidPrice;
-    }
-
-    void setAskPrice(double ask) {
-        askPrice = ask;
-    }
-
-    double getAskPrice() const {
-        return askPrice;
-    }
-
-    void setLastTradedPrice(double lastPrice) {
-        lastTradedPrice = lastPrice;
-    }
-
-    double getLastTradedPrice() const {
-        return lastTradedPrice;
-    }
-
-    void setVWAP(double volumeWeightedAvgPrice) {
-        vwap = volumeWeightedAvgPrice;
-    }
-
-    double getVWAP() const {
-        return vwap;
-    }
-
+    void setBidPrice(double bid) { bidPrice = bid; }
+    double getBidPrice() const { return bidPrice; }
+    void setAskPrice(double ask) { askPrice = ask; }
+    double getAskPrice() const { return askPrice; }
+    void setLastTradedPrice(double lastPrice) { lastTradedPrice = lastPrice; }
+    double getLastTradedPrice() const { return lastTradedPrice; }
+    void setVWAP(double volumeWeightedAvgPrice) { vwap = volumeWeightedAvgPrice; }
+    double getVWAP() const { return vwap; }
     // Setters and Getters for Order Book Depth
-    void setBidVolume(double volume) {
-        bidVolume = volume;
-    }
-
-    double getBidVolume() const {
-        return bidVolume;
-    }
-
-    void setAskVolume(double volume) {
-        askVolume = volume;
-    }
-
-    double getAskVolume() const {
-        return askVolume;
-    }
-
+    void setBidVolume(double volume) { bidVolume = volume;}
+    double getBidVolume() const { return bidVolume; }
+    void setAskVolume(double volume) { askVolume = volume; }
+    double getAskVolume() const { return askVolume; }
     // Setters and Getters for Trade Volume
-    void setTradeVolume(double volume) {
-        tradeVolume = volume;
-    }
-
-    double getTradeVolume() const {
-        return tradeVolume;
-    }
+    void setTradeVolume(double volume) { tradeVolume = volume; }
+    double getTradeVolume() const { return tradeVolume; }
 };
 
 class VenueMetrics {
@@ -304,7 +266,8 @@ public:
             }
         } else if (action == 2) { // Hold
             // Calculate reward based on market dynamics, opportunity costs, etc.
-            reward = price_change * current_portfolio_state.getCurrentAssetCount(); // Benefit or loss from holding the asset
+            reward = price_change * current_portfolio_state.getCurrentAssetCount(); // Benefit or loss from 
+                                                                                    // holding the asset
         }
 
         // Update the current market price after the action
@@ -362,19 +325,26 @@ private:
 
         return state_tensor;
     }
-    tensorflow::Tensor computeLoss(const std::vector<tensorflow::Tensor>& targetQs, const std::vector<tensorflow::Tensor>& predictedQs, const std::vector<tensorflow::Tensor>& actions, const std::vector<tensorflow::Tensor>& rewards, const std::vector<tensorflow::Tensor>& done_flags) {
+    tensorflow::Tensor computeLoss(const std::vector<tensorflow::Tensor>& targetQs, 
+                            const std::vector<tensorflow::Tensor>& predictedQs, 
+                            const std::vector<tensorflow::Tensor>& actions, 
+                            const std::vector<tensorflow::Tensor>& rewards, 
+                            const std::vector<tensorflow::Tensor>& done_flags) {
         // Loss = Summation of (reward + gamma * max(targetQ) - predictedQ)^2
         // where gamma is the discount factor
 
         const float gamma = 0.99; // discount factor
-        tensorflow::Tensor loss(tensorflow::DT_FLOAT, tensorflow::TensorShape({})); // scalar tensor to store loss value
+        tensorflow::Tensor loss(tensorflow::DT_FLOAT, tensorflow::TensorShape({})); // scalar tensor to 
+                                                                                    // store loss value
         auto loss_tensor = loss.tensor<float, 0>();
 
         float accumulated_loss = 0.0;
         for(size_t i = 0; i < targetQs.size(); i++) {
             float max_targetQ = targetQs[i].tensor<float, 2>().maximum(); // assuming Q-values are in 2D tensor
             float predictedQ = predictedQs[i].tensor<float, 2>()(0, actions[i].tensor<int, 1>()(0));
-            accumulated_loss += std::pow(rewards[i].tensor<float, 1>()(0) + gamma * max_targetQ * (1 - done_flags[i].tensor<float, 1>()(0)) - predictedQ, 2);
+            accumulated_loss += std::pow(
+                rewards[i].tensor<float, 1>()(0) + gamma * max_targetQ * (1 - done_flags[i].tensor<float, 1>()(0)) 
+                - predictedQ, 2);
         }
 
         loss_tensor(0) = accumulated_loss / targetQs.size(); // average loss
@@ -419,7 +389,8 @@ public:
         auto q_values = outputs[0].flat<float>();
 
         // Find the action with the maximum Q-value
-        int best_action = std::distance(q_values.data(), std::max_element(q_values.data(), q_values.data() + TOTAL_POSSIBLE_ACTIONS));
+        int best_action = std::distance(q_values.data(), 
+                            std::max_element(q_values.data(), q_values.data() + TOTAL_POSSIBLE_ACTIONS));
 
         return best_action;
     }
@@ -459,10 +430,13 @@ public:
         TF_CHECK_OK(session.Run({{states_input, states}}, {main_model}, &predicted_q_values_outputs));
 
         // Compute loss
-        tensorflow::Tensor loss = computeLoss(target_q_values_outputs, predicted_q_values_outputs, actions, rewards, done_flags);
+        tensorflow::Tensor loss = 
+            computeLoss(target_q_values_outputs, predicted_q_values_outputs, actions, rewards, done_flags);
 
         // Perform backpropagation using the optimizer
-        TF_CHECK_OK(session.Run({{states_input, states}, {actions_input, actions}, {rewards_input, rewards}, {next_states_input, next_states}, {done_flags_input, done_flags}}, {optimizer, loss}, nullptr));
+        TF_CHECK_OK(session.Run({{states_input, states}, {actions_input, actions}, 
+                                    {rewards_input, rewards}, {next_states_input, next_states}, 
+                                    {done_flags_input, done_flags}}, {optimizer, loss}, nullptr));
 
         global_step++;
     }
@@ -485,6 +459,8 @@ public:
         experience_replay.push_back(experience);
     }    
 };
+
+
 class ExperienceReplay {
 private:
     std::deque<Experience> memory;   // Deque to store experiences
