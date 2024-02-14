@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_6/data_locality_example.hpp
+vector
+-
+random
+-
+
+/home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_6/loop_unrolling_and_tilling_example.hpp
+vector
+-
+numeric
+-
+
+/home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_6/main.cpp
+iostream
+-
+chrono
+-
+loop_unrolling_and_tilling_example.hpp
+/home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_6/loop_unrolling_and_tilling_example.hpp
+sched.h
+-
+unistd.h
+-
+thread
+-
+iostream
+-
+iomanip
+-
+random
+-
+benchmark/benchmark.h
+-
+data_locality_example.hpp
+/home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_6/data_locality_example.hpp
+loop_unrolling_and_tilling_example.hpp
+/home/silahian/projects/book_cpp_high_performance_financial_systems/chapter_6/loop_unrolling_and_tilling_example.hpp
+

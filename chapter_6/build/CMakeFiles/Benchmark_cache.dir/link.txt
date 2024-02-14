@@ -1,0 +1,1 @@
+/bin/c++   -O3 -g -O0   CMakeFiles/Benchmark_cache.dir/main.cpp.o  -o Benchmark_cache  /usr/local/lib/libbenchmark.a -lpthread -lrt 
