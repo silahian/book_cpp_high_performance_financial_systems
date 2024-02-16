@@ -14,10 +14,6 @@ find_package(benchmark REQUIRED)
 # Define your executable
 add_executable(${PROJECT_NAME} main.cpp )
 
-#flags
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
-
 # Link Google Benchmark to the executable
 target_link_libraries(${PROJECT_NAME} benchmark::benchmark)
 

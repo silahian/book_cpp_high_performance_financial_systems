@@ -1,6 +1,9 @@
 #include <iostream>
 #include <chrono>
 #include "loop_unrolling_and_tilling_example.hpp"
+#include "prefetching_data.hpp"
+#include "cache_line_aligned.hpp"
+#include "false_sharing.hpp"
 
 int main(int argc, char** argv) {
     const int matrix_size = 100000;  // Adjust the matrix size as needed
@@ -21,13 +24,13 @@ int main(int argc, char** argv) {
         }
     }
 
-    loop_unrolling_and_tiling_example example(data);
+    false_sharing example;
 
     if (argc != 2) {
         std::cerr << "Usage: " << argv[0] << " [optimized | unoptimized]\n";
         return 1;
     }
-    cpu_set_t mask;
+    /*cpu_set_t mask;
     CPU_ZERO(&mask);
     CPU_SET(0, &mask); // Set the CPU affinity to CPU 0
 
@@ -35,15 +38,16 @@ int main(int argc, char** argv) {
         perror("sched_setaffinity");
         exit(1);
     }
-
+    */
+   
     std::string mode(argv[1]);
 
     if (mode == "unoptimized") {
         std::cout << "Running unoptimized version\n";
-        example.matrix_multiply(a, b, c);
+        example.run_unoptimized();
     } else if (mode == "optimized") {
         std::cout << "Running optimized version\n";
-        example.matrix_multiply_tiled(a, b, c);
+        example.run_optimized();
     } else {
         std::cerr << "Invalid argument. Use 'optimized' or 'unoptimized'.\n";
         return 1;

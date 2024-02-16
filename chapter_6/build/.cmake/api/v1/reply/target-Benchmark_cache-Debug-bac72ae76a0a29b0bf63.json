@@ -31,7 +31,7 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 22,
+				"line" : 18,
 				"parent" : 0
 			}
 		]
@@ -42,7 +42,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : " -O3 -g -O0  "
+					"fragment" : "-g  "
 				},
 				{
 					"fragment" : "-std=gnu++17"
@@ -68,7 +68,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-O3 -g -O0",
+				"fragment" : "-g",
 				"role" : "flags"
 			},
 			{
