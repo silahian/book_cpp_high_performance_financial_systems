@@ -1,5 +1,6 @@
 # C++ High Performance for Financial Systems
 This repository is to support the printed book.
+
 The book is available in Amazon: https://www.amazon.com/High-Performance-Financial-Systems-leveraging/dp/1805124528/
 
 ## More about this book
